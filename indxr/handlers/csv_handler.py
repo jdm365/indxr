@@ -35,12 +35,11 @@ def index(
     with open(path, "rb") as file:
         position = file.tell()  # Init position
 
-        for i, line in enumerate(file):
-            if i == 0 and has_header:
-                if not fieldnames:
-                    fieldnames = line.decode("utf-8").strip().split(delimiter)
+        if has_header and not fieldnames:
+            fieldnames = file.readline().decode("utf-8").strip().split(delimiter)
 
-            elif return_dict:
+        for i, line in enumerate(file):
+            if return_dict:
                 idx = csv_line_to_dict(
                     line=line, fieldnames=fieldnames, delimiter=delimiter
                 )[key_id]
